@@ -12,6 +12,41 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+      - VITE_PROXY_TARGET=http://backend:8080
     ports:
       - "3000:3000"
     restart: unless-stopped
+
+  backend:
+    image: incidea-backend:dev
+    build:
+      context: ../incideabackend/
+      dockerfile: Dockerfile.dev
+    container_name: backend
+    volumes:
+      - ../incideabackend:/app
+      - backend-m2:/home/ubuntu/.m2
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://db:5432/postgres}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-postgres}
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+      - supabase
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+    restart: unless-stopped
+
+networks:
+  supabase:
+    external: true
+    name: ${SUPABASE_NETWORK:-supabase_network_incidea-app}
+
+volumes:
+  backend-m2:

@@ -1,0 +1,30 @@
+# syntax=docker/dockerfile:1.7
+#
+# Development image: `spring-boot:run` + devtools.
+# The source is bind-mounted over /app by docker-compose, so editing Java
+# files only requires compiling (./mvnw compile) and devtools restarts the
+# context. The image is never rebuilt for code changes.
+#
+ARG JAVA_VERSION=21
+
+FROM eclipse-temurin:${JAVA_VERSION}-jdk AS dev
+
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends unzip \
+ && rm -rf /var/lib/apt/lists/*
+
+ENV HOME=/home/ubuntu
+WORKDIR /app
+RUN chown 1000:1000 /app
+
+
+COPY --chown=1000:1000 .mvn/ .mvn/
+COPY --chown=1000:1000 mvnw pom.xml ./
+USER 1000:1000
+RUN ./mvnw -B -DskipTests dependency:go-offline
+
+COPY --chown=1000:1000 src ./src
+
+EXPOSE 8080
+CMD ["./mvnw", "spring-boot:run"]
