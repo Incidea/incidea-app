@@ -1,0 +1,12 @@
+name: incidea-prod
+
+services:
+  react:
+    image: incidea-frontend:prod
+    build:
+      context: ../incideafrontend/
+      dockerfile: Dockerfile
+    container_name: react-prod
+    ports:
+      - "8081:80"
+    restart: unless-stopped
