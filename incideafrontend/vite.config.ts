@@ -20,6 +20,12 @@ const config = defineConfig({
     strictPort: true,
     watch: {
       usePolling: process.env.CHOKIDAR_USEPOLLING === 'true'
+    },
+    proxy: {
+      '/api': {
+        target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8080',
+        changeOrigin: true
+      }
     }
   }
 })
