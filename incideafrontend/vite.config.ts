@@ -14,6 +14,14 @@ const config = defineConfig({
     tanstackRouter({ target: 'react', autoCodeSplitting: true }),
     viteReact(),
   ],
+  server: {
+    host: true,
+    port: 3000,
+    strictPort: true,
+    watch: {
+      usePolling: process.env.CHOKIDAR_USEPOLLING === 'true'
+    }
+  }
 })
 
 export default config
