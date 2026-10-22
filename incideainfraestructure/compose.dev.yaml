@@ -1,0 +1,17 @@
+name: incidea-dev
+
+services:
+  react:
+    image: incidea-frontend:dev
+    build:
+      context: ../incideafrontend/
+      dockerfile: Dockerfile.dev
+    container_name: react
+    volumes:
+      - ../incideafrontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
