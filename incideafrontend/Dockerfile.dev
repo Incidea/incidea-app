@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1.7
+#
+# Development image: Vite dev server with hot-reload.
+# Source code is NOT baked in for daily work: docker-compose bind-mounts it
+# over /app, so editing files on the host triggers HMR without rebuilding.
+# Dependencies are installed here so the container never needs the host's
+# node_modules (an anonymous volume keeps them when /app is mounted).
+#
+ARG NODE_VERSION=24.22.1-alpine
+
+FROM node:${NODE_VERSION} AS dev
+
+ENV PNPM_HOME=/pnpm \
+    PATH=/pnpm:$PATH \
+    COREPACK_HOME=/opt/corepack
+
+
+RUN corepack enable \
+ && corepack prepare pnpm@12.6.0 --activate \
+ && mkdir -p /pnpm \
+ && chown -R node:node /opt/corepack /pnpm
+
+WORKDIR /app
+RUN chown node:node /app
+
+COPY --chown=node:node pnpm-lock.yaml pnpm-workspace.yaml ./
+USER node
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store,uid=1000,gid=1000 \
+    pnpm fetch
+
+COPY --chown=node:node package.json ./
+RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store,uid=1000,gid=1000 \
+    pnpm install --frozen-lockfile --offline
+
+COPY --chown=node:node . .
+
+EXPOSE 3000
+CMD ["pnpm", "dev", "--host", "0.0.0.0"]

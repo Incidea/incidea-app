@@ -1,0 +1,27 @@
+node_modules
+dist
+dist-ssr
+.tanstack
+.output
+.nitro
+.vinxi
+.wrangler
+*.local
+*.log
+*.tsbuildinfo
+.eslintcache
+coverage
+
+# Environment files: Vite bakes VITE_* at build time, pass them as build args.
+.env
+.env.*
+!.env.example
+
+.git
+.gitignore
+.vscode
+.idea
+
+Dockerfile
+Dockerfile.dev
+.dockerignore
