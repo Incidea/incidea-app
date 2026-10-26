@@ -13,7 +13,7 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 - [x] README
 - [x] Healthcheck definido en `compose.yaml`
 - [ ] CI en GitHub Actions
-- [ ] `AGENTS.md`
+- [X] `AGENTS.md`
 - [ ] Migraciones y modelo de datos
 - [ ] Endpoints, autenticación y CORS
 
