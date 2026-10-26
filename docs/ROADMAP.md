@@ -12,7 +12,7 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 - [x] Rama `main` protegida (PR obligatorio)
 - [x] README
 - [x] Healthcheck definido en `compose.yaml`
-- [ ] CI en GitHub Actions
+- [X] CI en GitHub Actions
 - [X] `AGENTS.md`
 - [ ] Migraciones y modelo de datos
 - [ ] Endpoints, autenticación y CORS
@@ -40,18 +40,18 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 
 **Objetivo:** que el proyecto tenga una base sólida antes de escribir funcionalidades.
 
-- [ ] Crear `AGENTS.md` (y `CLAUDE.md` apuntando a él, si se usa Claude Code):
-  - [ ] Stack y versiones
-  - [ ] Comandos para arrancar, testear y construir
-  - [ ] Estructura de paquetes y convenciones de nombres
-  - [ ] Reglas del dominio (aislamiento por organización, estados y transiciones, parte editable solo en En curso y En espera)
-  - [ ] Reglas de base de datos (Flyway, no editar migraciones aplicadas)
-  - [ ] Reglas de proceso (ramas, PR, tests obligatorios, no tocar secretos)
-  - [ ] Enlaces a los documentos de decisiones técnicas y de funcionamiento
-- [ ] Montar CI en GitHub Actions:
-  - [ ] Backend: construir y ejecutar tests
-  - [ ] Frontend: instalar, lint, tests y build
-  - [ ] Construir la imagen Docker del backend en cada PR
+- [X] Crear `AGENTS.md` (y `CLAUDE.md` apuntando a él, si se usa Claude Code):
+  - [X] Stack y versiones
+  - [X] Comandos para arrancar, testear y construir
+  - [X] Estructura de paquetes y convenciones de nombres
+  - [X] Reglas del dominio (aislamiento por organización, estados y transiciones, parte editable solo en En curso y En espera)
+  - [X] Reglas de base de datos (Flyway, no editar migraciones aplicadas)
+  - [X] Reglas de proceso (ramas, PR, tests obligatorios, no tocar secretos)
+  - [X] Enlaces a los documentos de decisiones técnicas y de funcionamiento
+- [X] Montar CI en GitHub Actions:
+  - [X] Backend: construir y ejecutar tests
+  - [X] Frontend: instalar, lint, typecheck y build
+  - [X] Construir la imagen Docker del backend en cada PR
   - [ ] (Opcional) levantar `docker compose` y esperar al healthcheck
 - [ ] Activar los checks del CI como obligatorios en `main` (después de que hayan corrido una vez)
 - [ ] Arreglar el healthcheck:
@@ -60,7 +60,7 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
   - [ ] Comprobar que `curl` existe en la imagen final
 - [ ] Flyway: migración inicial y `ddl-auto=validate`
 - [ ] Crear `.env.example` con todas las variables necesarias
-- [ ] Decidir la versión de Java
+- [X] Decidir la versión de Java
 
 **Hecho cuando:** un PR dispara el CI, no se puede fusionar en rojo y `docker compose up` deja todos los servicios en estado *healthy*.
 
