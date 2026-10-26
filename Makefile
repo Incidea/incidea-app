@@ -5,7 +5,7 @@ SHELL := /bin/bash
 # Configuration
 # ---------------------------------------------------------------------------
 COMPOSE ?= docker compose
-INFRA   := incideainfraestructure
+INFRA   := incideainfrastructure
 
 COMPOSE_DEV  := $(COMPOSE) -f compose.dev.yaml
 COMPOSE_PROD := $(COMPOSE) -f compose.yaml

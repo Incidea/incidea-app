@@ -77,7 +77,7 @@ containers), but **both connect to the same Supabase database**.
 | --- | --- |
 | **Docker Desktop** | Includes Docker Compose v2 (`docker compose`). On Windows, use the WSL 2 backend. |
 | **GNU Make** | Optional, but every command in this README uses it. |
-| **pnpm 12** | Only to install the Supabase CLI inside `incideainfraestructure`. |
+| **pnpm 12** | Only to install the Supabase CLI inside `incideainfrastructure`. |
 | **Node.js 24 and JDK 21** | Only needed for the "without Docker" workflow. Images already include them. |
 | **Free ports** | 3000, 8080, 8081, 8082, 54321, 54322, 54323, 54324, 54327. |
 
@@ -276,7 +276,7 @@ production. They optimize for different things.
 
 ## Environment variables
 
-`incideainfraestructure/.env` is ignored by Git. `make setup` creates it from
+`incideainfrastructure/.env` is ignored by Git. `make setup` creates it from
 `.env.example`:
 
 ```dotenv
@@ -395,7 +395,7 @@ and JDK 21. The Docker images already include the correct versions.
 | Port already in use | Run `ss -ltnp` and look for the conflicting port. |
 | A deleted Java class still responds | `make backend-clean-compile`; a plain compile leaves stale `.class` files. |
 | Supabase containers restart when Docker starts | They use `restart: unless-stopped`. Run `make stop` to stop them; `make dev` starts them again. |
-| `Supabase CLI not found` | Run `make setup` (installs it with pnpm in `incideainfraestructure`). |
+| `Supabase CLI not found` | Run `make setup` (installs it with pnpm in `incideainfrastructure`). |
 | Want a clean slate | `make clean` (app only) and/or `make supabase-reset` (deletes local database data). |
 | Supabase ports are reachable from the network | This CLI version publishes them on `0.0.0.0`. On shared machines, restrict access with a firewall. |
 
@@ -407,7 +407,7 @@ and JDK 21. The Docker images already include the correct versions.
   with `network ... not found`, so the Makefile uses `--force-recreate`.
 - **Backend schema:** Flyway creates and migrates the `app` schema. Supabase's
   internal schemas are left untouched.
-- **Supabase CLI:** installed as a dev dependency in `incideainfraestructure`.
+- **Supabase CLI:** installed as a dev dependency in `incideainfrastructure`.
   `node_modules` is ignored by Git; `package.json` and `pnpm-lock.yaml` are
   committed so the CLI version is reproducible.
 - **Image sizes:** frontend dev ~660 MB, frontend prod ~93 MB, backend dev
