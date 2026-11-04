@@ -52,14 +52,14 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
   - [X] Backend: construir y ejecutar tests
   - [X] Frontend: instalar, lint, typecheck y build
   - [X] Construir la imagen Docker del backend en cada PR
-  - [ ] (Opcional) levantar `docker compose` y esperar al healthcheck
-- [ ] Activar los checks del CI como obligatorios en `main` (después de que hayan corrido una vez)
-- [ ] Arreglar el healthcheck:
-  - [ ] Permitir `/actuator/health` en Spring Security
-  - [ ] Exponer solo `health` en Actuator
-  - [ ] Comprobar que `curl` existe en la imagen final
-- [ ] Flyway: migración inicial y `ddl-auto=validate`
-- [ ] Crear `.env.example` con todas las variables necesarias
+  - [X] (Opcional) levantar `docker compose` y esperar al healthcheck
+- [X] Activar los checks del CI como obligatorios en `main` (después de que hayan corrido una vez)
+- [X] Arreglar el healthcheck:
+  - [X] Permitir `/actuator/health` en Spring Security
+  - [X] Exponer solo `health` en Actuator
+  - [X] Comprobar que `curl` existe en la imagen final
+- [X] Flyway: migración inicial y `ddl-auto=validate`
+- [X] Crear `.env.example` con todas las variables necesarias
 - [X] Decidir la versión de Java
 
 **Hecho cuando:** un PR dispara el CI, no se puede fusionar en rojo y `docker compose up` deja todos los servicios en estado *healthy*.

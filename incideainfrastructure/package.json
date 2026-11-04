@@ -7,6 +7,6 @@
     "supabase:status": "supabase status"
   },
   "devDependencies": {
-    "supabase": "^2.121.0"
+    "supabase": "^2.122.0"
   }
 }
