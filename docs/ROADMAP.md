@@ -71,10 +71,10 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 **Objetivo:** login de punta a punta, ya desplegado.
 
 **Base de datos**
-- [ ] Migración `organizations` (id, name, active)
-- [ ] Migración `users` (id igual al de Supabase Auth, organization_id, role, name, email, active)
-- [ ] `CHECK`: `organization_id` obligatorio salvo para el administrador de plataforma
-- [ ] `CHECK` sobre los valores permitidos del rol
+- [X] Migración `organizations` (id, name, active)
+- [X] Migración `users` (id igual al de Supabase Auth, organization_id, role, name, email, active)
+- [X] `CHECK`: `organization_id` obligatorio salvo para el administrador de plataforma
+- [X] `CHECK` sobre los valores permitidos del rol
 
 **Backend**
 - [ ] Spring Security como *resource server*: validar el JWT de Supabase (revisar la documentación actual sobre cómo firma los tokens)
