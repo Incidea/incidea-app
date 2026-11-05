@@ -1,4 +1,4 @@
-package com.incidea.incideabackend.config;
+package com.incidea.incideabackend.common.config;
 
 import java.util.List;
 
@@ -25,16 +25,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/health", "/error").permitAll()
+                        .requestMatchers("/api/v1/health", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();
-    }
-
-    ;
+    };
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -47,6 +45,5 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
-    }
-;
+    };
 }
