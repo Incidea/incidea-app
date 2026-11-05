@@ -16,23 +16,34 @@ import jakarta.persistence.Table;
 @Table(name = "organizations")
 public class Organization {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "organization_id")
-	private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "organization_id")
+    private UUID id;
 
-	@Column(nullable = false, length = 40)
-	private String name;
+    @Column(nullable = false, length = 40)
+    private String name;
 
-	public UUID getId() {
-		return id;
-	}
+    @Column(nullable = false)
+    private Boolean active = true;
 
-	public String getName() {
-		return name;
-	}
+    public UUID getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean status) {
+        this.active = status;
+    }
 }
