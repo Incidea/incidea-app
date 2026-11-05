@@ -77,11 +77,11 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 - [X] `CHECK` sobre los valores permitidos del rol
 
 **Backend**
-- [ ] Spring Security como *resource server*: validar el JWT de Supabase (revisar la documentación actual sobre cómo firma los tokens)
-- [ ] Enlazar el `sub` del token con `users.id`
-- [ ] Endpoint `GET /me` (usuario, rol y organización)
-- [ ] CORS configurado por variable de entorno (`localhost` en local, la URL de Vercel en producción)
-- [ ] Seed manual: primer administrador de plataforma y primera organización
+- [X] Spring Security como *resource server*: validar el JWT de Supabase (revisar la documentación actual sobre cómo firma los tokens)
+- [X] Enlazar el `sub` del token con `users.id`
+- [X] Endpoint `GET /me` (usuario, rol y organización)
+- [X] CORS configurado por variable de entorno (`localhost` en local, la URL de Vercel en producción)
+- [X] Seed manual: primer administrador de plataforma y primera organización
 
 **Frontend**
 - [ ] Login con email/contraseña y Google (`supabase-js`)
