@@ -13,7 +13,7 @@ ENV PNPM_HOME=/pnpm \
     COREPACK_HOME=/opt/corepack
 
 RUN corepack enable \
- && corepack prepare pnpm@12.6.0 --activate \
+ && corepack prepare pnpm@12.16.1 --activate \
  && pnpm config set store-dir /pnpm/store
 
 WORKDIR /app

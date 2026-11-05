@@ -16,7 +16,7 @@ ENV PNPM_HOME=/pnpm \
 
 
 RUN corepack enable \
- && corepack prepare pnpm@12.6.0 --activate \
+ && corepack prepare pnpm@12.16.1 --activate \
  && mkdir -p /pnpm \
  && chown -R node:node /opt/corepack /pnpm
 
