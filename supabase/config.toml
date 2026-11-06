@@ -417,6 +417,6 @@ enabled = true
 #GOOGLE OAUTH2
 [auth.external.google]
 enabled = true
-client_id = "446311933902-uklkc9b71m0neabe3j3dtme0ucv7scd5.apps.googleusercontent.com"
+client_id = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID)"
 secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_SECRET)"
 skip_nonce_check = false
