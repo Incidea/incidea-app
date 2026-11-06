@@ -1,27 +1,23 @@
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { verifySession } from '#/features/auth/verifySession'
-import { createFileRoute, redirect, isRedirect } from '@tanstack/react-router'
+import type { UserDto } from '#/types/user.dto'
 
-// src/routes/_authenticated.tsx
-export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: async ({ location }) => {
-    try {
-      const user = await verifySession() // might throw on network error
-      if (!user) {
-        throw redirect({
-          to: '/auth/login',
-          search: { redirect: location.href },
-        })
-      }
-      return { user }
-    } catch (error) {
-      // Re-throw redirects (they're intentional, not errors)
-      if (isRedirect(error)) throw error
-
-      // Auth check failed (network error, etc.) - redirect to login
-      throw redirect({
-        to: '/auth/login',
-        search: { redirect: location.href },
-      })
+export interface RouterContext {
+    auth: {
+        profile: UserDto | null
     }
-  },
+}
+
+export const Route = createFileRoute('/_authenticated')({
+    beforeLoad: async ({ location }) => {
+        const r = await verifySession()
+        if (r.status === 'unauthenticated') {
+            throw redirect({ to: '/auth/login', search: { redirect: location.href } })
+        }
+        if (r.status === 'needs-onboarding') {
+            throw redirect({ to: '/auth/onboarding' })
+        }
+        return { profile: r.profile }
+    },
+    errorComponent: () => <p>No se puede conectar con el servidor.</p>,
 })
