@@ -79,18 +79,22 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 **Backend**
 - [X] Spring Security como *resource server*: validar el JWT de Supabase (revisar la documentación actual sobre cómo firma los tokens)
 - [X] Enlazar el `sub` del token con `users.id`
-- [X] Endpoint `GET /me` (usuario, rol y organización)
+- [ ] Endpoint `GET /me` (usuario, rol y organización; devuelve 404 si el usuario no existe en BD)
 - [X] CORS configurado por variable de entorno (`localhost` en local, la URL de Vercel en producción)
 - [X] Seed manual: primer administrador de plataforma y primera organización
+- [ ] Endpoint `POST /auth/onboarding` (crear primera organización y asignarse como ORGANIZATION_ADMIN; límite 1 organización por usuario)
 
 **Frontend**
 - [ ] Login con email/contraseña y Google (`supabase-js`)
 - [ ] Rutas protegidas y envío del JWT al backend
 - [ ] Pantalla que muestra nombre y rol del usuario
+- [ ] Pantalla de onboarding (crear primera organización y asignarse como ORGANIZATION_ADMIN)
 
 **Tests**
 - [ ] Token válido, caducado, ausente y de usuario inexistente
 - [ ] Un usuario sin organización (salvo administrador de plataforma) no puede existir
+- [ ] Flujo de onboarding: usuario nuevo crea su primera organización y se le asigna rol ORGANIZATION_ADMIN
+- [ ] Límite de 1 organización por usuario
 
 **Despliegue (al cerrar el sprint)**
 - [ ] Probar antes la conexión de Render a la base de datos de Supabase (revisar en la documentación actual qué conexión usar desde un servicio externo, por si hace falta el *pooler*)
@@ -99,7 +103,7 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 - [ ] URLs de redirección de Google y Supabase configuradas
 - [ ] `health check path` configurado en Render
 
-**Hecho cuando:** entras con Google en la URL desplegada y ves tu nombre y tu rol.
+**Hecho cuando:** entras con Google en la URL desplegada y ves tu nombre y tu rol (o completas el onboarding creando tu primera organización si es tu primera vez).
 
 **Post sugerido:** login de punta a punta, desplegado.
 
