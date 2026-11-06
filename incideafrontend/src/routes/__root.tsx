@@ -1,19 +1,13 @@
-import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
+import { Outlet, createRootRoute } from '@tanstack/react-router'
 
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import '../styles.css'
-import type { SupabaseAuthState } from '#/lib/supabase-auth'
 
-export interface RouterContext {
-  auth: SupabaseAuthState
-}
-
-export const Route = createRootRouteWithContext<RouterContext>()({
+export const Route = createRootRoute({
   component: RootComponent,
 })
-
 function RootComponent() {
   return (
     <>
