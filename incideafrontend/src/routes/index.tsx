@@ -7,7 +7,7 @@ function Home() {
     <main>
       <h1>Incidea</h1>
       <p>Gestiona tus incidencias de mantenimiento.</p>
-      <Link to="/auth/login">Iniciar sesión</Link>
+      <Link to="/auth/login" search={{ redirect: '/' }}>Iniciar sesión</Link>
     </main>
   )
 }
