@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.incidea.incideabackend.common.exception.EntityNotFoundException;
+
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -22,14 +24,14 @@ public class UserController {
     public UserDto me(@AuthenticationPrincipal Jwt jwt) {
         String sub = jwt.getClaimAsString("sub");
         User user = userRepository.findById(UUID.fromString(sub))
-            .orElseThrow(() -> new IllegalArgumentException("User not found: " + sub));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         return new UserDto(
-            user.getId(),
-            user.getName(),
-            user.getEmail(),
-            user.getRole(),
-            user.getOrganizationId()
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole(),
+                user.getOrganizationId()
         );
     }
 
