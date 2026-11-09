@@ -2,12 +2,15 @@ import { supabase } from '#/lib/supabase'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
 
+// Login route: email/password + Google. Redirects to dashboard if already authenticated.
 export const Route = createFileRoute('/auth/login')({
+    // Sanitizes the redirect query param to avoid open redirects
     validateSearch: (search) => {
         const raw = (search.redirect as string) || '/dashboard'
         const redirectTo = raw.startsWith('/') && !raw.startsWith('//') ? raw : '/dashboard'
         return { redirect: redirectTo }
     },
+    // If a session already exists, redirect away from the login page
     beforeLoad: async ({ context }) => {
         const { data: { session } } = await supabase.auth.getSession()
         if (session) {
