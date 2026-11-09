@@ -2,6 +2,7 @@ import { supabase } from "./supabase"
 
 const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
+// Error thrown by apiRequest when the backend returns a non-OK status
 export class ApiError extends Error {
     constructor(public status: number, public body: string) {
         super(`API error ${status}`)
@@ -9,11 +10,13 @@ export class ApiError extends Error {
     }
 }
 
+// Reads the current Supabase access token from the session
 async function getToken(): Promise<string | null> {
     const { data: { session } } = await supabase.auth.getSession()
     return session?.access_token ?? null
 }
 
+// Generic fetch wrapper: adds Bearer token, throws ApiError on non-OK responses
 export async function apiRequest<T>(
     path: string,
     options: RequestInit = {}

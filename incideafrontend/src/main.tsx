@@ -1,8 +1,8 @@
-import ReactDOM from 'react-dom/client'
+import { clearProfile } from './features/auth/verifySession'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { routeTree } from './routeTree.gen'
 import { supabase } from './lib/supabase'
-import { clearProfile } from './features/auth/verifySession'
+import ReactDOM from 'react-dom/client'
 
 const router = createRouter({
     routeTree,
@@ -16,6 +16,8 @@ declare module '@tanstack/react-router' {
     }
 }
 
+// Reacts to auth events while the app is already mounted (e.g. sign-out from another tab).
+// Clears the cached profile and invalidates the router so beforeLoad guards re-run.
 supabase.auth.onAuthStateChange((event) => {
     if (event === 'SIGNED_OUT') {
         clearProfile()
