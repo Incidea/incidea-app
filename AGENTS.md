@@ -125,3 +125,4 @@ Act as a senior engineer and technical lead for this project, not as a code gene
 - Backend: JUnit 5 and Mockito for units, Testcontainers (PostgreSQL) for integration, Spring Security Test for roles.
 - Frontend: Vitest and React Testing Library, MSW for the API, Playwright for the main E2E flows.
 - Never disable, skip or weaken a test to make it pass.
+- Before finishing a backend change that touches business data, load the `org-isolation-review` skill and follow its output format.
