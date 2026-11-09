@@ -16,7 +16,9 @@
 
 [ii. Autenticación](#autenticación)
 
-[iii. Generación de PDFs](#generación-de-pdfs)
+[iii. Validación de estado de cuenta](#validación-de-estado-de-cuenta)
+
+[iv. Generación de PDFs](#generación-de-pdfs)
 
 [d. DevOps](#devops)
 
@@ -88,6 +90,38 @@ La autenticación la resuelve **Supabase Auth**, con email/contraseña y Google,
 - Spring Security lo valida y aplica la autorización (roles, pertenencia a equipos) con datos de nuestras propias tablas.
 
 **Alternativa descartada**: implementar la autenticación a mano en Spring. Supone más trabajo y más riesgo de seguridad, y no aporta valor diferencial al producto. Lo que sí implementamos nosotros es la autorización.
+
+3. ### Validación de estado de cuenta {#validación-de-estado-de-cuenta}
+
+**Problema detectado**: el endpoint `GET /api/v1/users/me` devolvía el perfil del usuario aunque este estuviera desactivado (`active = false`) o su organización estuviera desactivada (`organization.active = false`). Un usuario dado de baja podía seguir obteniendo un JWT de Supabase Auth y el backend lo aceptaba, permitiendo acceso a la aplicación a cuentas que deberían estar bloqueadas. Además, no existía distinción entre "usuario sin onboarding" (no existe en tabla `users`) y "usuario desactivado" (existe pero `active = false`).
+
+**Solución implementada**: se añade una validación de estado de cuenta en la cadena de autenticación de Spring Security OAuth2 Resource Server, ejecutada en cada petición autenticada.
+
+**Componentes**:
+
+- `AccountDesactivateException` (`common/exception/`): extiende `AuthenticationException`. Lleva un enum `AccountStatusReason` con `USER_DEACTIVATED` y `ORGANIZATION_DEACTIVATED`. Se lanza desde el conversor de JWT cuando la cuenta o la organización están desactivadas.
+- `AccountStatus` (`user/`): `record(boolean active, Boolean organizationActive)` que encapsula el resultado de la consulta de estado.
+- `UserRepository.findAccountStatusById(UUID)` (`user/`): una sola query con `LEFT JOIN` a `Organization` que obtiene `u.active` y `o.active` de un golpe, evitando dos consultas por request.
+- `JwtAuthenticationStatusConverter` (`common/config/`): implementa `Converter<Jwt, AbstractAuthenticationToken>`. Envuelve al conversor por defecto de Spring y, tras validar el JWT, ejecuta la query de estado. Si el usuario no existe en `users` (aún no ha hecho onboarding), deja pasar sin bloquear; el endpoint `/me` responderá 404 y el frontend gestionará el onboarding. Si `active = false`, lanza `AccountDesactivateException(USER_DEACTIVATED)`. Si `organizationActive = false`, lanza `AccountDesactivateException(ORGANIZATION_DEACTIVATED)`. Si `sub` no es un UUID válido, lanza `InvalidBearerTokenException` (401).
+- `AccountDesactivationEntryPoint` (`common/config/`): implementa `AuthenticationEntryPoint`, registrado en `oauth2ResourceServer.authenticationEntryPoint`. Si la excepción es `AccountDesactivateException`, responde HTTP 403 con `ProblemDetail` y campo `code` (`USER_DEACTIVATED` u `ORGANIZATION_DEACTIVATED`). Para cualquier otra excepción de autenticación, responde HTTP 401 con `WWW-Authenticate: Bearer`.
+- `SecurityConfig` (`common/config/`): inyecta `UserRepository` y configura el conversor y el entry point en la cadena OAuth2.
+
+**Flujo de una petición autenticada**:
+
+1. Spring Security valida el JWT (firma, expiración).
+2. El conversor extrae el `sub`, valida que sea UUID y ejecuta una sola query `LEFT JOIN` a `users` + `organizations`.
+3. Si no hay fila en `users`: deja pasar (usuario sin onboarding).
+4. Si `active = false`: 403 `code=USER_DEACTIVATED`.
+5. Si `organizationActive = false`: 403 `code=ORGANIZATION_DEACTIVATED`.
+6. Si todo es correcto: continúa la petición normalmente.
+
+**Tests**: `JwtAuthenticationStatusConverterTest` (unitario, 6 casos),
+`AccountDesactivationEntryPointTest` (unitario, 4 casos) y `AccountStatusChainTest`
+(integración de la cadena completa, 6 casos).
+El test preexistente `IncideabackendApplicationTests.contextLoads` requiere una base de datos
+PostgreSQL real y no se ve afectado.
+
+**Compensación**: la consulta se ejecuta en cada petición autenticada (no hay caché por ahora). Para el volumen del MVP es aceptable; si el tráfico crece, se puede migrar a claims personalizados en el JWT de Supabase.
 
 3. ### Generación de PDFs {#generación-de-pdfs}
 
