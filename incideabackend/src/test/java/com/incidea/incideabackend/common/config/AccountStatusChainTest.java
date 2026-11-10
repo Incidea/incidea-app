@@ -20,11 +20,11 @@ import org.springframework.security.oauth2.server.resource.InvalidBearerTokenExc
 
 import com.incidea.incideabackend.common.exception.AccountDesactivateException;
 import com.incidea.incideabackend.common.exception.EntityNotFoundException;
-import com.incidea.incideabackend.user.AccountStatus;
+import com.incidea.incideabackend.user.dto.AccountStatus;
 import com.incidea.incideabackend.user.Role;
 import com.incidea.incideabackend.user.User;
-import com.incidea.incideabackend.user.UserController;
-import com.incidea.incideabackend.user.UserDto;
+import com.incidea.incideabackend.user.controller.UserController;
+import com.incidea.incideabackend.user.dto.UserDto;
 import com.incidea.incideabackend.user.UserRepository;
 import com.incidea.incideabackend.user.UserService;
 
