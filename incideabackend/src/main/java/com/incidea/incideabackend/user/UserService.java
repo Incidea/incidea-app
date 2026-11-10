@@ -2,6 +2,7 @@ package com.incidea.incideabackend.user;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -21,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final OrganizationService organizationService;
 
+    @Autowired
     public UserService(UserRepository userRepository, OrganizationService organizationService) {
         this.userRepository = userRepository;
         this.organizationService = organizationService;
