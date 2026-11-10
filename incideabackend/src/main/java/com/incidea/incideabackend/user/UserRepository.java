@@ -7,6 +7,8 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.incidea.incideabackend.user.dto.AccountStatus;
+
 public interface UserRepository extends JpaRepository<User, UUID> {
 
 	/**
@@ -23,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 	 * organization, {@code organizationActive} is {@code null}.
 	 */
 	@Query("""
-		select new com.incidea.incideabackend.user.AccountStatus(u.active, u.role, o.active)
+		select new com.incidea.incideabackend.user.dto.AccountStatus(u.active, u.role, o.active)
 		from User u
 		left join Organization o on o.id = u.organizationId
 		where u.id = :id

@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.server.resource.InvalidBearerTokenExc
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 import com.incidea.incideabackend.common.exception.AccountDesactivateException;
-import com.incidea.incideabackend.user.AccountStatus;
+import com.incidea.incideabackend.user.dto.AccountStatus;
 import com.incidea.incideabackend.user.Role;
 import com.incidea.incideabackend.user.UserRepository;
 
