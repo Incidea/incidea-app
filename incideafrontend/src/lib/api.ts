@@ -1,6 +1,5 @@
 import { supabase } from "./supabase"
 
-const API_BASE = import.meta.env.VITE_API_URL ?? ''
 
 // Error thrown by apiRequest when the backend returns a non-OK status
 export class ApiError extends Error {
@@ -30,7 +29,7 @@ export async function apiRequest<T>(
         headers.set('Authorization', `Bearer ${token}`)
     }
 
-    const res = await fetch(`${API_BASE}${path}`, {
+    const res = await fetch(`${path}`, {
         ...options,
         headers,
     })
