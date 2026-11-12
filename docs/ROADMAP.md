@@ -82,7 +82,7 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 - [X] Endpoint `GET /me` (usuario, rol y organización; devuelve 404 si el usuario no existe en BD)
 - [X] CORS configurado por variable de entorno (`localhost` en local, la URL de Vercel en producción)
 - [X] Seed manual: primer administrador de plataforma y primera organización
-- [ ] Endpoint `POST /auth/onboarding` (crear primera organización y asignarse como ORGANIZATION_ADMIN; límite 1 organización por usuario)
+- [X] Endpoint `POST /auth/onboarding` (crear primera organización y asignarse como ORGANIZATION_ADMIN; límite 1 organización por usuario)
 
 **Frontend**
 - [X] Login con email/contraseña y Google (`supabase-js`)
