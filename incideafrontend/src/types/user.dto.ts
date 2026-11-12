@@ -1,7 +1,9 @@
+import type { Role } from "./role.dto"
+
 export interface UserDto {
     id: string,
     name: string,
     email: string,
-    role: 'CLIENT' | 'MANAGER' | 'TECHNICIAN' | 'ORGANIZATION_ADMIN' | 'PLATFORM_ADMIN',
+    role: Role,
     organizationId: string | null
 }
