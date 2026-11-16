@@ -57,12 +57,14 @@ export const OnBoardingForm = () => {
     return <form onSubmit={handleSubmit(onSubmit)}>
         <Input
             id="userName"
+            type="text"
             label="Nombre y apellidos"
             {...register("userName")}
             error={errors.userName?.message}
         />
         <Input
             id="organizationName"
+            type="text"
             label="Nombre de la organización"
             {...register("organizationName")}
             error={errors.organizationName?.message}
