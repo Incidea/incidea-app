@@ -1,14 +1,15 @@
+import type { InputHTMLAttributes } from "react"
 import type { UseFormRegisterReturn } from "react-hook-form"
 
 type Props = {
-    id: string,
+    id: string
     label: string
-    register?: UseFormRegisterReturn,
-    error?: string,
-}
+    register?: UseFormRegisterReturn
+    error?: string
+} & InputHTMLAttributes<HTMLInputElement>
 
 export const Input = ({ id, register, error, label, ...props }: Props) => {
-    const errorId = `${id}-error`
+    const errorId = `${id}-error`;
     return (
         <div>
             <label htmlFor={id}>{label}</label>
@@ -19,7 +20,7 @@ export const Input = ({ id, register, error, label, ...props }: Props) => {
                 {...register}
                 {...props}
             />
-            {error && <p>{error}</p>}
+            {error && <p id={errorId}>{error}</p>}
         </div>
     )
 }
