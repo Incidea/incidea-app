@@ -86,13 +86,20 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 
 **Frontend**
 - [X] Login con email/contraseña y Google (`supabase-js`)
+- [ ] Registro de cuenta en Supabase (email/contraseña) con `supabase.auth.signUp`, accesible desde el login (p. ej. `/auth/register`) y respetando el parámetro `redirect`
+- [ ] Gestión del flujo post-registro: sesión inmediata → continuar al flujo de `verifySession`; confirmación de correo requerida → mostrar estado "revisa tu correo" (según configuración de Supabase)
+- [ ] Dejar claro el acceso con Google como alta implícita cuando no exista cuenta (copy/enlace coherente entre login y registro)
 - [X] Rutas protegidas y envío del JWT al backend
 - [X] Pantalla que muestra nombre y rol del usuario
 - [X] Pantalla de onboarding (crear primera organización y asignarse como ORGANIZATION_ADMIN)
 
+> Nota: Supabase Auth gestiona credenciales/sesión; el endpoint de onboarding sigue creando el usuario y la organización en la base de datos de la aplicación.
+
 **Tests**
 - [ ] Token válido, caducado, ausente y de usuario inexistente
 - [ ] Un usuario sin organización (salvo administrador de plataforma) no puede existir
+- [ ] Flujo de registro en Supabase: alta correcta, email ya registrado y manejo del caso con/sin confirmación de correo
+- [ ] Tras registrarse (y autenticar), un usuario sin perfil en BD llega a onboarding (`/me` 404 / `needs-onboarding`)
 - [ ] Flujo de onboarding: usuario nuevo crea su primera organización y se le asigna rol ORGANIZATION_ADMIN
 - [ ] Límite de 1 organización por usuario
 
@@ -103,7 +110,7 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 - [ ] URLs de redirección de Google y Supabase configuradas
 - [ ] `health check path` configurado en Render
 
-**Hecho cuando:** entras con Google en la URL desplegada y ves tu nombre y tu rol (o completas el onboarding creando tu primera organización si es tu primera vez).
+**Hecho cuando:** un usuario nuevo puede registrarse en Supabase (o entrar con Google), completar el onboarding creando su primera organización si es su primera vez, y ver su nombre y rol en la URL desplegada.
 
 **Post sugerido:** login de punta a punta, desplegado.
 
