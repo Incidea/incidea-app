@@ -88,7 +88,7 @@ SaaS para empresas de mantenimiento: gestión de incidencias, equipos técnicos 
 - [X] Login con email/contraseña y Google (`supabase-js`)
 - [X] Rutas protegidas y envío del JWT al backend
 - [X] Pantalla que muestra nombre y rol del usuario
-- [ ] Pantalla de onboarding (crear primera organización y asignarse como ORGANIZATION_ADMIN)
+- [X] Pantalla de onboarding (crear primera organización y asignarse como ORGANIZATION_ADMIN)
 
 **Tests**
 - [ ] Token válido, caducado, ausente y de usuario inexistente
