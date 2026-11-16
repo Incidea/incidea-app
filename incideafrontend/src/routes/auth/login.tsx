@@ -1,5 +1,5 @@
 import { supabase } from '#/lib/supabase'
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { Link, createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 
 // Login route: email/password + Google. Redirects to dashboard if already authenticated.
@@ -11,10 +11,10 @@ export const Route = createFileRoute('/auth/login')({
         return { redirect: redirectTo }
     },
     // If a session already exists, redirect away from the login page
-    beforeLoad: async ({ context }) => {
+    beforeLoad: async ({ search }) => {
         const { data: { session } } = await supabase.auth.getSession()
         if (session) {
-            throw redirect({ to: (context as { redirect?: string }).redirect ?? '/dashboard' })
+            throw redirect({ to: search.redirect })
         }
     },
     component: LoginComponent,
@@ -22,6 +22,7 @@ export const Route = createFileRoute('/auth/login')({
 
 function LoginComponent() {
     const { redirect: redirectTo } = Route.useSearch()
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -32,14 +33,14 @@ function LoginComponent() {
         setIsLoading(true)
         setError('')
 
-        try {
-            await supabase.auth.signInWithPassword({ email, password })
-            await Route.useNavigate()({ to: redirectTo, search: { redirect: redirectTo } })
-        } catch (err: any) {
-            setError(err.message || 'Login failed')
-        } finally {
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+        if (signInError) {
+            setError(signInError.message)
             setIsLoading(false)
+            return
         }
+
+        await navigate({ to: redirectTo })
     }
 
     const handleGoogleLogin = async () => {
@@ -59,7 +60,7 @@ function LoginComponent() {
                 onSubmit={handleSubmit}
                 className="max-w-md w-full space-y-4 p-6 border rounded-lg"
             >
-                <h1 className="text-2xl font-bold text-center">Sign In</h1>
+                <h1 className="text-2xl font-bold text-center">Iniciar sesión</h1>
                 <button
                     type="button"
                     onClick={handleGoogleLogin}
@@ -76,7 +77,7 @@ function LoginComponent() {
 
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-1">
-                        Email
+                        Correo electrónico
                     </label>
                     <input
                         id="email"
@@ -90,7 +91,7 @@ function LoginComponent() {
 
                 <div>
                     <label htmlFor="password" className="block text-sm font-medium mb-1">
-                        Password
+                        Contraseña
                     </label>
                     <input
                         id="password"
@@ -107,8 +108,15 @@ function LoginComponent() {
                     disabled={isLoading}
                     className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50"
                 >
-                    {isLoading ? 'Signing in...' : 'Sign In'}
+                    {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
                 </button>
+
+                <p className="text-center text-sm">
+                    ¿No tienes cuenta?{' '}
+                    <Link to="/auth/register" search={{ redirect: redirectTo }} className="underline">
+                        Regístrate
+                    </Link>
+                </p>
             </form>
         </div>
     )
