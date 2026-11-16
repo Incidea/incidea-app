@@ -1,21 +1,29 @@
 import { clearProfile, setProfile } from "#/features/auth/verifySession";
-import type { UserDto } from "#/types/user.dto";
+import type { OnboardingFormValues } from "./onboardingForm.schema";
+import { onboardingFormSchema } from "./onboardingForm.schema";
+import { Button } from "#/features/components/ui/button";
+import { Input } from "#/features/components/ui/input";
 import type { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "@tanstack/react-router";
+import type { UserDto } from "#/types/user.dto";
 import { useForm } from "react-hook-form";
 import { api, ApiError } from "#/lib/api";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-type FormValues = {
-    userName: string,
-    organizationName: string
-}
+
 
 export const OnBoardingForm = () => {
 
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormValues>();
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<OnboardingFormValues>({
+        resolver:
+            zodResolver(onboardingFormSchema),
+        defaultValues: {
+            userName: "", organizationName: ""
+        }
+    });
     const navigate = useNavigate()
 
-    const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const onSubmit: SubmitHandler<OnboardingFormValues> = async (data) => {
         try {
             const onboarding = await api.post<UserDto>("/api/v1/users/onboarding", data)
             setProfile(onboarding.id, onboarding)
@@ -47,30 +55,18 @@ export const OnBoardingForm = () => {
     }
 
     return <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="userName">
-            Nombre y apellidos
-        </label>
-        <input
+        <Input
             id="userName"
-            type="text"
-            {...register("userName", {
-                required: "El nombre y apellidos es obligatorio",
-
-            })}
-        ></input>
-        <p>{errors.organizationName?.message}</p>
-        <label htmlFor="organizationName">
-            Nombre de la organización
-        </label>
-        <input
+            label="Nombre y apellidos"
+            {...register("userName")}
+            error={errors.userName?.message}
+        />
+        <Input
             id="organizationName"
-            type="text"
-            {...register("organizationName", {
-                required: "El nombre de la organización es obligatorio",
-            })}
-        >
-        </input>
-        <p>{errors.organizationName?.message}</p>
-        <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Enviando..." : "Enviar"}</button>
+            label="Nombre de la organización"
+            {...register("organizationName")}
+            error={errors.organizationName?.message}
+        />
+        <Button type="submit" isSubmitting={isSubmitting}>Enviar</Button>
     </form >
 }
