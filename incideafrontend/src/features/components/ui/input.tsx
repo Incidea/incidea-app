@@ -1,5 +1,4 @@
 import type { UseFormRegisterReturn } from "react-hook-form"
-import type { HTMLInputTypeAttribute } from "react"
 
 type Props = {
     id: string,
