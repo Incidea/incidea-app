@@ -8,6 +8,7 @@ import type { SubmitHandler } from "react-hook-form"
 import { useForm } from "react-hook-form"
 import type { RegisterFormValues } from "./registerForm.schema"
 import { registerFormSchema } from "./registerForm.schema"
+import { buildAuthCallbackUrl } from "#/features/auth/authRedirects"
 
 type Props = {
     redirectTo: string
@@ -34,7 +35,7 @@ export const RegisterForm = ({ redirectTo, onEmailSent }: Props) => {
             email: values.email,
             password: values.password,
             options: {
-                emailRedirectTo: `${window.location.origin}${redirectTo}`,
+                emailRedirectTo: buildAuthCallbackUrl(redirectTo),
             },
         })
 
