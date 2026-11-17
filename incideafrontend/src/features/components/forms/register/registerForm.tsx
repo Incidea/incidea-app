@@ -12,7 +12,7 @@ import { buildAuthCallbackUrl } from "#/features/auth/authRedirects"
 
 type Props = {
     redirectTo: string
-    onEmailSent: () => void
+    onEmailSent: (email: string) => void
 }
 
 export const RegisterForm = ({ redirectTo, onEmailSent }: Props) => {
@@ -50,7 +50,7 @@ export const RegisterForm = ({ redirectTo, onEmailSent }: Props) => {
         }
 
         if (data.user) {
-            onEmailSent()
+            onEmailSent(values.email)
         }
     }
 
