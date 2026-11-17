@@ -1,5 +1,7 @@
 import { Link, createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { handleGoogleAuth } from '#/features/auth/authRedirects'
+import { Button } from '#/features/components/ui/button'
+import { Input } from '#/features/components/ui/input'
 import { supabase } from '#/lib/supabase'
 import React, { useState } from 'react'
 
@@ -53,13 +55,14 @@ function LoginComponent() {
                 className="max-w-md w-full space-y-4 p-6 border rounded-lg"
             >
                 <h1 className="text-2xl font-bold text-center">Iniciar sesión</h1>
-                <button
-                    type="button"
-                    onClick={() => handleGoogleAuth(redirectTo, setError)}
-                    className="w-full border py-2 px-4 rounded-md hover:bg-gray-50"
-                >
+                <p className="text-center text-sm">
+                    Accede con tu cuenta de Google. Si es tu primera vez, se creará tu cuenta automáticamente.
+                </p>
+                <Button type="button" onClick={() => handleGoogleAuth(redirectTo, setError)}>
                     Continuar con Google
-                </button>
+                </Button>
+
+                <p className="text-center text-sm">O inicia sesión con tu correo electrónico</p>
 
                 {error && (
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -67,46 +70,32 @@ function LoginComponent() {
                     </div>
                 )}
 
-                <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-1">
-                        Correo electrónico
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                </div>
+                <Input
+                    id="email"
+                    label="Correo electrónico"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
 
-                <div>
-                    <label htmlFor="password" className="block text-sm font-medium mb-1">
-                        Contraseña
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                </div>
+                <Input
+                    id="password"
+                    label="Contraseña"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
 
-                <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50"
-                >
-                    {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
-                </button>
+                <Button type="submit" isSubmitting={isLoading} submittingText="Iniciando sesión...">
+                    Iniciar sesión
+                </Button>
 
                 <p className="text-center text-sm">
                     ¿No tienes cuenta?{' '}
                     <Link to="/auth/register" search={{ redirect: redirectTo }} className="underline">
-                        Regístrate
+                        Crear cuenta
                     </Link>
                 </p>
             </form>
