@@ -1,6 +1,8 @@
 import { RegisterForm } from '#/features/components/forms/register/registerForm'
 import { Link, createFileRoute, redirect } from '@tanstack/react-router'
 import { handleGoogleAuth } from '#/features/auth/authRedirects'
+import { Button } from '#/features/components/ui/button'
+import { VerifyEmailNotice } from '#/features/components/forms/register/verifyEmailNotice'
 import { supabase } from '#/lib/supabase'
 import { useState } from 'react'
 
@@ -22,26 +24,10 @@ export const Route = createFileRoute('/auth/register')({
 function RegisterComponent() {
     const { redirect: redirectTo } = Route.useSearch()
     const [error, setError] = useState('')
-    const [emailSent, setEmailSent] = useState(false)
+    const [emailSentTo, setEmailSentTo] = useState<string | null>(null)
 
-    if (emailSent) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="max-w-md w-full space-y-4 p-6 border rounded-lg">
-                    <h1 className="text-2xl font-bold text-center">Revisa tu correo</h1>
-                    <p className="text-center">
-                        Te hemos enviado un enlace para confirmar tu cuenta. Después de confirmarla, inicia sesión para continuar.
-                    </p>
-                    <Link
-                        to="/auth/login"
-                        search={{ redirect: redirectTo }}
-                        className="block w-full text-center border py-2 px-4 rounded-md hover:bg-gray-50"
-                    >
-                        Ir a iniciar sesión
-                    </Link>
-                </div>
-            </div>
-        )
+    if (emailSentTo) {
+        return <VerifyEmailNotice email={emailSentTo} redirectTo={redirectTo} />
     }
 
     return (
@@ -49,15 +35,13 @@ function RegisterComponent() {
             <div className="max-w-md w-full space-y-4 p-6 border rounded-lg">
                 <h1 className="text-2xl font-bold text-center">Crear cuenta</h1>
                 <p className="text-center text-sm">
-                    También puedes crear tu cuenta con Google.
+                    Continúa con tu cuenta de Google. Si ya tienes una cuenta, iniciarás sesión.
                 </p>
-                <button
-                    type="button"
-                    onClick={() => handleGoogleAuth(redirectTo, setError)}
-                    className="w-full border py-2 px-4 rounded-md hover:bg-gray-50"
-                >
+                <Button type="button" onClick={() => handleGoogleAuth(redirectTo, setError)}>
                     Continuar con Google
-                </button>
+                </Button>
+
+                <p className="text-center text-sm">O crea tu cuenta con tu correo electrónico</p>
 
                 {error && (
                     <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -65,12 +49,12 @@ function RegisterComponent() {
                     </div>
                 )}
 
-                <RegisterForm redirectTo={redirectTo} onEmailSent={() => setEmailSent(true)} />
+                <RegisterForm redirectTo={redirectTo} onEmailSent={(email) => setEmailSentTo(email)} />
 
                 <p className="text-center text-sm">
                     ¿Ya tienes cuenta?{' '}
                     <Link to="/auth/login" search={{ redirect: redirectTo }} className="underline">
-                        Inicia sesión
+                        Iniciar sesión
                     </Link>
                 </p>
             </div>
