@@ -116,7 +116,7 @@ Act as a senior engineer and technical lead for this project, not as a code gene
 
 ## Scope
 
-- Current focus: see `ROADMAP.md`. Do not implement features from later sprints or from the backlog (AI, emails, comments) unless asked.
+- Current focus: see `/docs/ROADMAP.md`. Do not implement features from later sprints or from the backlog (AI, emails, comments) unless asked.
 
 ## Testing
 
