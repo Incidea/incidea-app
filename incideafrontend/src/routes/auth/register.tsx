@@ -1,6 +1,7 @@
 import { RegisterForm } from '#/features/components/forms/register/registerForm'
-import { supabase } from '#/lib/supabase'
 import { Link, createFileRoute, redirect } from '@tanstack/react-router'
+import { handleGoogleAuth } from '#/features/auth/authRedirects'
+import { supabase } from '#/lib/supabase'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/auth/register')({
@@ -22,17 +23,6 @@ function RegisterComponent() {
     const { redirect: redirectTo } = Route.useSearch()
     const [error, setError] = useState('')
     const [emailSent, setEmailSent] = useState(false)
-
-    const handleGoogleSignUp = async () => {
-        setError('')
-        const { error: oauthError } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: `${window.location.origin}${redirectTo}`,
-            },
-        })
-        if (oauthError) setError(oauthError.message)
-    }
 
     if (emailSent) {
         return (
@@ -63,7 +53,7 @@ function RegisterComponent() {
                 </p>
                 <button
                     type="button"
-                    onClick={handleGoogleSignUp}
+                    onClick={() => handleGoogleAuth(redirectTo, setError)}
                     className="w-full border py-2 px-4 rounded-md hover:bg-gray-50"
                 >
                     Continuar con Google

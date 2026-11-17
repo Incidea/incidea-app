@@ -1,6 +1,7 @@
-import { supabase } from '#/lib/supabase'
 import { Link, createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import { handleGoogleAuth } from '#/features/auth/authRedirects'
+import { supabase } from '#/lib/supabase'
+import React, { useState } from 'react'
 
 // Login route: email/password + Google. Redirects to dashboard if already authenticated.
 export const Route = createFileRoute('/auth/login')({
@@ -28,7 +29,7 @@ function LoginComponent() {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
         setIsLoading(true)
         setError('')
@@ -43,16 +44,7 @@ function LoginComponent() {
         await navigate({ to: redirectTo })
     }
 
-    const handleGoogleLogin = async () => {
-        setError('')
-        const { error: oauthError } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: `${window.location.origin}${redirectTo}`,
-            },
-        })
-        if (oauthError) setError(oauthError.message)
-    }
+
 
     return (
         <div className="min-h-screen flex items-center justify-center">
@@ -63,7 +55,7 @@ function LoginComponent() {
                 <h1 className="text-2xl font-bold text-center">Iniciar sesión</h1>
                 <button
                     type="button"
-                    onClick={handleGoogleLogin}
+                    onClick={() => handleGoogleAuth(redirectTo, setError)}
                     className="w-full border py-2 px-4 rounded-md hover:bg-gray-50"
                 >
                     Continuar con Google
