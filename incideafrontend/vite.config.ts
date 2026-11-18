@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import { devtools } from '@tanstack/devtools-vite'
 
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
@@ -27,6 +27,11 @@ const config = defineConfig({
         changeOrigin: true,
       },
     },
+  },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    css: true,
   },
 })
 
